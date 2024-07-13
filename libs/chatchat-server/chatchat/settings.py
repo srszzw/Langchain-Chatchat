@@ -266,6 +266,9 @@ class PlatformConfig(MyBaseModel):
     api_key: str = "EMPTY"
     """api key if available"""
 
+    api_proxy: str = ""
+    """API 代理"""
+
     api_concurrencies: int = 5
     """该平台单模型最大并发数"""
 
@@ -310,11 +313,11 @@ class ApiModelSettings(BaseFileSettings):
     DEFAULT_LLM_MODEL: str = "glm4-chat"
     """默认选用的 LLM 名称"""
 
-    DEFAULT_EMBEDDING_MODEL: str = "bge-large-zh-v1.5"
+    DEFAULT_EMBEDDING_MODEL: str = "bge-m3"
     """默认选用的 Embedding 名称"""
 
     Agent_MODEL: str = "" # TODO: 似乎与 LLM_MODEL_CONFIG 重复了
-    """AgentLM模型的名称 (可以不指定，指定之后就锁定进入Agent之后的Chain的模型，不指定就是LLM_MODELS[0])"""
+    """AgentLM模型的名称 (可以不指定，指定之后就锁定进入Agent之后的Chain的模型，不指定就是 DEFAULT_LLM_MODEL)"""
 
     HISTORY_LEN: int = 3
     """默认历史对话轮数"""
@@ -327,10 +330,9 @@ class ApiModelSettings(BaseFileSettings):
 
     SUPPORT_AGENT_MODELS: t.List[str] = [
             "chatglm3-6b",
+            "glm-4",
             "openai-api",
-            "Qwen-14B-Chat",
-            "Qwen-7B-Chat",
-            "qwen-turbo",
+            "Qwen-2",
             "qwen2-instruct",
             "gpt-3.5-turbo",
             "gpt-4o",
@@ -543,10 +545,6 @@ class ToolSettings(BaseFileSettings):
         "use": False,
     }
 
-    shell: dict = {
-        "use": False,
-    }
-
     weather_check: dict = {
         "use": False,
         "api_key": "",
@@ -566,22 +564,6 @@ class ToolSettings(BaseFileSettings):
         "use": False,
     }
     '''numexpr 数学计算工具配置项'''
-
-    vqa_processor: dict = {
-        "use": False,
-        "model_path": "your model path",
-        "tokenizer_path": "your tokenizer path",
-        "device": "cuda:1",
-    }
-    '''图片对话工具配置项。该工具依赖 torch，后续将删除。现在 WEBUI 已经支持图片对话功能。'''
-
-    aqa_processor: dict = {
-        "use": False,
-        "model_path": "your model path",
-        "tokenizer_path": "yout tokenizer path",
-        "device": "cuda:2",
-    }
-    '''音频对话工具配置项。该工具依赖 torch，后续将删除。'''
 
     text2images: dict = {
         "use": False,
